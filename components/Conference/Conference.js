@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import moment from 'moment';
 import 'moment-timezone';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
 import CSS from './Conference.module.css';
@@ -29,15 +30,20 @@ const Conference = () => {
     setIsHidden(false);
   }
 
+  // buttons
   const [disabledButtons, setDisabledButtons] = useState([]);
 
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(null);
+
   const handleBtnClick = (index) => {
+    setSelectedButtonIndex(index);
     setDisabledButtons((prev) => {
       const newState = [...prev];
       newState[index] = true;
       return newState;
     });
   };
+
   // select date
   const [selectedTime, setSelectedTime] = useState(new Date());
 
@@ -61,7 +67,7 @@ const Conference = () => {
       .then((data) => setSlotOptions(data));
   }, []);
 
-  // sloting time according to provided min in input field
+  // slotting time according to provided min in input field
 
   const getSlots = (start, end, selectedDate) => {
     const slots = [];
@@ -84,6 +90,9 @@ const Conference = () => {
     return slots;
   };
 
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  console.log(selectedSlot);
+
   // sloting time according to provided min in input field
   const renderSchedule = () => {
     return slotOptions?.schedule?.map((item) => {
@@ -98,6 +107,8 @@ const Conference = () => {
                     className="btn btn-error m-2 bg-none"
                     onClick={() => handleBtnClick(index)}
                     disabled={disabledButtons[index]}
+                    selected={selectedSlot}
+                    onSelect={setSelectedSlot}
                   >
                     {slot.start}
                   </label>
@@ -160,8 +171,30 @@ const Conference = () => {
                 <div className="mr-6 sm:w-full text-[#000]  font-semibold"></div>
               </div>
               {/*<------------------- Modal ----------> */}
-              <div className="flex justify-end">
-                <label className="btn btn-success">Book Now</label>
+              <div className={`flex justify-end ${selectedButtonIndex === null ? 'hidden' : ''}`}>
+                <label htmlFor="my-modal-4" className="btn btn-success">
+                  Book Now
+                </label>
+                <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+                <label htmlFor="my-modal-4" className="modal cursor-pointer">
+                  <label className="modal-box bg-[#fff] relative" htmlFor="">
+                    <div className="flex justify-center items-center ">
+                      <Image src="/great-vector.svg" width="84" height="84" alt="logo" />
+                    </div>
+                    <div className="text-[#000] font-semibold my-5">
+                      <h3 className="text-4xl flex items center justify-center">Great!!!</h3>
+                      <h3 className="text-lg flex items center justify-center">Your Booked Time</h3>
+                      <p className="flex items center justify-center">
+                        Date: {format(selectedTime, 'PP')}, {selectedSlot}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <label htmlFor="my-modal-4" className="btn btn-warning ">
+                        Ok
+                      </label>
+                    </div>
+                  </label>
+                </label>
               </div>
             </div>
           </div>
