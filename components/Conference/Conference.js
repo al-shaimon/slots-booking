@@ -22,13 +22,22 @@ const Conference = () => {
     today: time,
   };
 
-  // time input field
+  // time input field and button handle
   const [isHidden, setIsHidden] = useState(true);
   function handleSubmit(event) {
     event.preventDefault();
     setIsHidden(false);
   }
 
+  const [disabledButtons, setDisabledButtons] = useState([]);
+
+  const handleBtnClick = (index) => {
+    setDisabledButtons((prev) => {
+      const newState = [...prev];
+      newState[index] = true;
+      return newState;
+    });
+  };
   // select date
   const [selectedTime, setSelectedTime] = useState(new Date());
 
@@ -85,7 +94,13 @@ const Conference = () => {
             <div className="grid grid-cols-3 gap-0">
               {slots.map((slot, index) => (
                 <div key={index}>
-                  <label className="btn btn-error m-2 bg-none">{slot.start}</label>
+                  <label
+                    className="btn btn-error m-2 bg-none"
+                    onClick={() => handleBtnClick(index)}
+                    disabled={disabledButtons[index]}
+                  >
+                    {slot.start}
+                  </label>
                 </div>
               ))}
             </div>
