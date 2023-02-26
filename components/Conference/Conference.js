@@ -3,6 +3,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import React, { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import CSS from './Conference.module.css';
 
 const Conference = () => {
   // current time
@@ -95,52 +96,59 @@ const Conference = () => {
   };
 
   return (
-    <div className="border rounded shadow-xl">
-      {/*<-------------- Current Time -----------> */}
-      <div className="text-center text-3xl text-[#000] font-bold mt-5">
-        <h2>
-          Time Now: {hours}:{minutes} {amOrPm}
-        </h2>
-      </div>
-      {/* <------- Meeting Duration Input field -------------> */}
-      <div className="mt-5 items-center justify-center text-[#000] flex">
-        <h2 className="text-lg md:text-2xl mr-2 md:mr-3">Enter Meeting Duration(Min)</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            id="time-input"
-            // value={bookingTime}
-            onChange={handleDurationChange}
-            className="input input-bordered input-success w-20 bg-[#fff]"
-          />
-        </form>
-      </div>
-      {/* <--------- Calender & slots ---------------> */}
-      <div className={isHidden ? 'hidden' : ''}>
-        <div className="p-5 grid md:grid-cols-2">
-          <div className="shadow-2xl">
-            {/* <------ Calender -------> */}
-            <div className="text-[#000] font-semibold md:justify-end md:flex md:mr-[50%]">
-              <p>Select Date</p>
-            </div>
-            <div className="sm:w-full text-[#000] font-semibold md:justify-end md:flex md:mr-72 ">
-              <DayPicker
-                className="md:justify-end md:flex md:mr-72"
-                modifiers={modifiers}
-                mode="single"
-                selected={selectedTime}
-                onSelect={setSelectedTime}
-                footer={footer}
-              />
-            </div>
+    <div>
+      <div className="border rounded-xl">
+        <div className={CSS.bg}>
+          {/*<-------------- Current Time -----------> */}
+          <div className="text-center text-3xl text-[#000] font-bold mt-5">
+            <h2>
+              Time Now: {hours}:{minutes} {amOrPm}
+            </h2>
           </div>
-          {/* <----------- Slots ----------> */}
-          <div className="">
-            <div className="text-[#000] font-semibold">
-              <p>Select Time Slot</p>
-              {renderSchedule()}
+          {/* <------- Meeting Duration Input field -------------> */}
+          <div className="mt-5 items-center justify-center text-[#000] flex">
+            <h2 className="md:text-2xl mr-2 md:mr-3">Enter Meeting Duration(Min)</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                id="time-input"
+                onChange={handleDurationChange}
+                className="input input-bordered input-success w-20 bg-[#fff]"
+              />
+            </form>
+          </div>
+          {/* <--------- Calender & slots ---------------> */}
+          <div className={isHidden ? 'hidden' : ''}>
+            <div className="p-5 grid md:grid-cols-2">
+              <div>
+                {/* <------ Calender -------> */}
+                <div className="text-[#000] font-semibold md:justify-end md:flex md:mr-[50%]">
+                  <p>Select Date</p>
+                </div>
+                <div className="sm:w-full text-[#000] font-semibold md:justify-end md:flex md:mr-72 ">
+                  <DayPicker
+                    className="md:justify-end md:flex md:mr-72"
+                    modifiers={modifiers}
+                    mode="single"
+                    selected={selectedTime}
+                    onSelect={setSelectedTime}
+                    footer={footer}
+                  />
+                </div>
+              </div>
+              {/* <----------- Slots ----------> */}
+              <div className="">
+                <div className="text-[#000] font-semibold">
+                  <p>Select Time Slot</p>
+                  {renderSchedule()}
+                </div>
+                <div className="mr-6 sm:w-full text-[#000]  font-semibold"></div>
+              </div>
+              {/*<------------------- Modal ----------> */}
+              <div className="flex justify-end">
+                <label className="btn btn-success">Book Now</label>
+              </div>
             </div>
-            <div className="mr-6 sm:w-full text-[#000]  font-semibold"></div>
           </div>
         </div>
       </div>
